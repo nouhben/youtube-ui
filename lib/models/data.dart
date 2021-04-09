@@ -9,7 +9,54 @@ const CustomUser currentUser = CustomUser(
   email: 'leoandrese.5@gmail.com',
   subscribers: '500k',
 );
+const CustomUser lurn = CustomUser(
+  name: 'Lurn',
+  email: 'Lurn@gamil.com',
+  profileImageUrl:
+      'https://yt3.ggpht.com/ytc/AAUvwnhIGPMzgkhOc6PjQSh-DOcjBq9yeu1-ObDHIzza=s176-c-k-c0x00ffffff-no-rj',
+  subscribers: '444K',
+);
+const CustomUser shroud = CustomUser(
+  name: 'Shroud',
+  email: 'Shroud@gamil.com',
+  subscribers: '6.75M',
+  profileImageUrl:
+      'https://yt3.ggpht.com/ytc/AAUvwnhAtpHA0B2-10Xf0mDysSHFz6MI53IWjgsGCFAi1w=s176-c-k-c0x00ffffff-no-rj',
+);
 final List<Video> videos = [
+  Video(
+    id: 'Lv-t7dWBuLU',
+    author: lurn,
+    title: 'Lurn is The Real Female Shroud - PUBG #19',
+    thumbnailUrl: 'https://i.ytimg.com/vi/Lv-t7dWBuLU/mqdefault.jpg',
+    duration: '8:20',
+    timestamp: DateTime(2019, 5, 22),
+    viewCount: '1M',
+    likes: '30187',
+    dislikes: '1447',
+  ),
+  Video(
+    id: 'AOc7vAOjGvc',
+    author: shroud,
+    title: 'THE KING OF PUBG',
+    thumbnailUrl: 'https://i.ytimg.com/vi/AOc7vAOjGvc/mqdefault.jpg',
+    duration: '11:29',
+    timestamp: DateTime(2018, 03, 22),
+    viewCount: '1.5M',
+    likes: '77K',
+    dislikes: '1447',
+  ),
+  Video(
+    id: '2BHKshqoN60',
+    author: shroud,
+    title: 'Most Satisfying long range Sniping in Battlefield ASMR',
+    thumbnailUrl: 'https://i.ytimg.com/vi/2BHKshqoN60/mqdefault.jpg',
+    duration: '11:24',
+    timestamp: DateTime(2016, 07, 02),
+    viewCount: '6.5M',
+    likes: '77K',
+    dislikes: '2.5K',
+  ),
   Video(
     id: 'x606y4QWrxo',
     author: currentUser,

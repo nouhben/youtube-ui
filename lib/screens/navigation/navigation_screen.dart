@@ -1,4 +1,8 @@
+import 'package:blog_responsive_app/screens/home/home_screen.dart';
+import 'package:blog_responsive_app/widgets/widgets.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 
 enum NavigationMenuItems { HOME, EXPLORE, ADD, SUBSCRIPTIONS, LIBRARY }
 
@@ -16,6 +20,13 @@ class _NavigationScreenState extends State<NavigationScreen> {
     this._activeItem = NavigationMenuItems.HOME;
   }
 
+  final _screens = [
+    HomeScreen(),
+    const Center(child: Text('Explore Screen')),
+    const Center(child: Text('Add Screen')),
+    const Center(child: Text('Subscriptions Screen')),
+    const Center(child: Text('Library Screen')),
+  ];
   @override
   Widget build(BuildContext context) {
     print('re-build nav');
@@ -54,6 +65,10 @@ class _NavigationScreenState extends State<NavigationScreen> {
             activeIcon: Icon(Icons.video_library),
           ),
         ],
+      ),
+      body: IndexedStack(
+        index: this._activeItem!.index,
+        children: this._screens,
       ),
     );
   }

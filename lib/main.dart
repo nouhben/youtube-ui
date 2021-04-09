@@ -1,5 +1,4 @@
-import 'package:blog_responsive_app/constants.dart';
-import 'package:blog_responsive_app/screens/navigation.dart';
+import 'package:blog_responsive_app/screens/navigation/navigation_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
