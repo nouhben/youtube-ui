@@ -1,6 +1,11 @@
+import 'package:blog_responsive_app/models/customer.dart';
+import 'package:blog_responsive_app/models/data.dart';
 import 'package:blog_responsive_app/screens/navigation/navigation_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
+
+import 'models/video.dart';
 
 void main() {
   runApp(MyApp());
@@ -19,7 +24,20 @@ class MyApp extends StatelessWidget {
           selectedItemColor: Colors.white,
         ),
       ),
-      home: NavigationScreen(),
+      home: MultiProvider(
+        providers: [
+          Provider<CustomUser>(
+            create: (_) => CustomUser(
+              name: 'Code Warrior',
+              profileImageUrl:
+                  'https://yt3.ggpht.com/yti/ANoDKi5FPLl_jZl-PHEg5XTsaGg2h_JCSaXRjRGErf36AQ=s88-c-k-c0x00ffffff-no-rj-mo',
+              email: 'leoandrese.5@gmail.com',
+              subscribers: '500k',
+            ),
+          ),
+        ],
+        child: NavigationScreen(),
+      ),
     );
   }
 }

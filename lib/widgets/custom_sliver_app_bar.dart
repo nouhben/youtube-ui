@@ -1,6 +1,7 @@
-import 'package:blog_responsive_app/models/data.dart';
+import 'package:blog_responsive_app/models/customer.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class CustomSliverAppBar extends StatelessWidget {
   const CustomSliverAppBar({
@@ -9,6 +10,7 @@ class CustomSliverAppBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final currentUser = Provider.of<CustomUser>(context, listen: false);
     return SliverAppBar(
       floating: true,
       forceElevated: true,

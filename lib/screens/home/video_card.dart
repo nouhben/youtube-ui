@@ -1,6 +1,8 @@
 import 'package:blog_responsive_app/models/video.dart';
+import 'package:blog_responsive_app/providers/selected_video_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import 'video_duration.dart';
 import 'video_information_headings.dart';
@@ -13,11 +15,20 @@ class VideoCard extends StatelessWidget {
   final Video video;
   @override
   Widget build(BuildContext context) {
+    final selectedVideoProvider =
+        Provider.of<SelectedVideoProvider>(context, listen: false);
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         InkWell(
-          onTap: () => print('play the video from thumbnail'),
+          onTap: () {
+            print(
+                'old selected video: ${selectedVideoProvider.selectedVideo.title}');
+            print('play the video from thumbnail');
+            selectedVideoProvider.setSelectedVideo(this.video);
+            print(
+                'selected video: ${selectedVideoProvider.selectedVideo.title}');
+          },
           child: Container(
             width: double.infinity,
             height: 230.0,
