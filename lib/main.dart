@@ -1,4 +1,6 @@
 import 'package:blog_responsive_app/models/customer.dart';
+import 'package:blog_responsive_app/models/video.dart';
+import 'package:blog_responsive_app/providers/selected_video_provider.dart';
 import 'package:blog_responsive_app/screens/navigation/navigation_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';

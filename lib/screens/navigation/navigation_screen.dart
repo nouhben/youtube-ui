@@ -1,7 +1,9 @@
+import 'package:blog_responsive_app/models/video.dart';
 import 'package:blog_responsive_app/screens/home/home_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:provider/provider.dart';
 
 enum NavigationMenuItems { HOME, EXPLORE, ADD, SUBSCRIPTIONS, LIBRARY }
 
@@ -34,8 +36,10 @@ class _NavigationScreenState extends State<NavigationScreen> {
         currentIndex: this._activeItem!.index,
         onTap: (index) {
           if (this._activeItem!.index != index)
-            setState(() =>
-                this._activeItem = NavigationMenuItems.values.elementAt(index));
+            setState(
+              () => this._activeItem =
+                  NavigationMenuItems.values.elementAt(index),
+            );
         },
         items: [
           BottomNavigationBarItem(
@@ -69,6 +73,24 @@ class _NavigationScreenState extends State<NavigationScreen> {
         index: this._activeItem!.index,
         children: this._screens,
       ),
+      // body: Consumer<Video>(
+      //   builder: (context, value, child) => Stack(
+      //     children: this
+      //         ._screens
+      //         .asMap()
+      //         .map(
+      //           (index, screen) => MapEntry(
+      //             index,
+      //             Offstage(
+      //               child: screen,
+      //               offstage: this._activeItem!.index == index,
+      //             ),
+      //           ),
+      //         )
+      //         .values
+      //         .toList(),
+      //   ),
+      // ),
     );
   }
 }
