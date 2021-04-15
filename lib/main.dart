@@ -1,11 +1,8 @@
 import 'package:blog_responsive_app/models/customer.dart';
-import 'package:blog_responsive_app/models/data.dart';
 import 'package:blog_responsive_app/screens/navigation/navigation_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
-
-import 'models/video.dart';
 
 void main() {
   runApp(MyApp());
