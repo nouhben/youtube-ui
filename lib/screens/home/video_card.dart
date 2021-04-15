@@ -17,17 +17,16 @@ class VideoCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final selectedVideoProvider =
         Provider.of<SelectedVideoProvider>(context, listen: false);
+    print('re-build video card');
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         InkWell(
           onTap: () {
-            print(
-                'old selected video: ${selectedVideoProvider.selectedVideo.title}');
             print('play the video from thumbnail');
             selectedVideoProvider.setSelectedVideo(this.video);
             print(
-                'selected video: ${selectedVideoProvider.selectedVideo.title}');
+                'selected video: ${selectedVideoProvider.selectedVideo.toString()}');
           },
           child: Container(
             width: double.infinity,
@@ -53,7 +52,12 @@ class VideoCard extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 10.0),
           child: InkWell(
             onLongPress: () => print('must show menu from long press!'),
-            onTap: () => print('must show the video'),
+            onTap: () {
+              print('must show the video: ');
+              selectedVideoProvider.setSelectedVideo(this.video);
+              print(
+                  'selected video: ${selectedVideoProvider.selectedVideo.toString()}');
+            },
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [

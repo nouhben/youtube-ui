@@ -21,4 +21,9 @@ class Video {
   final String viewCount;
   final String likes;
   final String dislikes;
+
+  @override
+  String toString() {
+    return 'Video($title • $duration min • $viewCount views)';
+  }
 }
