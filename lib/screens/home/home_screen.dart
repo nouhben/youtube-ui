@@ -29,7 +29,23 @@ class HomeScreen extends StatelessWidget {
               childCount: videos.length,
             ),
           ),
-        ]..add(),
+        ]..add(
+            SliverToBoxAdapter(
+              child: Consumer<SelectedVideoProvider>(
+                builder: (context, value, child) {
+                  if (!value.isFake)
+                    return Miniplayer(
+                      minHeight: 40.0,
+                      maxHeight: 60.0,
+                      builder: (height, width) => Container(
+                        color: Colors.redAccent,
+                      ),
+                    );
+                  return Text('Empty video');
+                },
+              ),
+            ),
+          ),
       ),
     );
   }

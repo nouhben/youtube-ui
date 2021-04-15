@@ -23,4 +23,5 @@ class SelectedVideoProvider with ChangeNotifier {
   }
 
   Video get selectedVideo => this._selectedVideo;
+  bool get isFake => this._selectedVideo.id.isEmpty;
 }
