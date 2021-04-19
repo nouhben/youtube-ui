@@ -2,6 +2,7 @@ import 'package:blog_responsive_app/models/video.dart';
 import 'package:blog_responsive_app/providers/selected_video_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:miniplayer/miniplayer.dart';
 import 'package:provider/provider.dart';
 
 import 'video_duration.dart';
@@ -17,6 +18,9 @@ class VideoCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final selectedVideoProvider =
         Provider.of<SelectedVideoProvider>(context, listen: false);
+    final _miniPlayerControllerProvider = Provider.of<MiniplayerController>(
+      context,
+    );
     print('re-build video card');
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -27,6 +31,10 @@ class VideoCard extends StatelessWidget {
             selectedVideoProvider.setSelectedVideo(this.video);
             print(
                 'selected video: ${selectedVideoProvider.selectedVideo.toString()}');
+            _miniPlayerControllerProvider.animateToHeight(
+              state: PanelState.MAX,
+              duration: Duration(milliseconds: 200),
+            );
           },
           child: Container(
             width: double.infinity,
