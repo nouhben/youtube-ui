@@ -3,7 +3,6 @@ import 'package:blog_responsive_app/providers/min_player_controller_provider.dar
 import 'package:blog_responsive_app/providers/selected_video_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:miniplayer/miniplayer.dart';
 import 'package:provider/provider.dart';
 
 import 'video_duration.dart';
@@ -15,9 +14,11 @@ class VideoCard extends StatelessWidget {
     required this.video,
     this.width,
     this.height,
+    this.showProgressIndicator,
   }) : super(key: key);
   final Video video;
   final double? width, height;
+  final bool? showProgressIndicator;
   @override
   Widget build(BuildContext context) {
     final selectedVideoProvider =
@@ -57,6 +58,13 @@ class VideoCard extends StatelessWidget {
             ),
           ),
         ),
+        if (this.showProgressIndicator != null)
+          const LinearProgressIndicator(
+            value: 0.78,
+            valueColor: AlwaysStoppedAnimation<Color>(Colors.redAccent),
+          )
+        else
+          const SizedBox.shrink(),
         const SizedBox(height: 6.0),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 10.0),
