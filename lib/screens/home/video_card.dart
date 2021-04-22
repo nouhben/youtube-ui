@@ -1,4 +1,5 @@
 import 'package:blog_responsive_app/models/video.dart';
+import 'package:blog_responsive_app/providers/min_player_controller_provider.dart';
 import 'package:blog_responsive_app/providers/selected_video_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -12,13 +13,17 @@ class VideoCard extends StatelessWidget {
   const VideoCard({
     Key? key,
     required this.video,
+    this.width,
+    this.height,
   }) : super(key: key);
   final Video video;
+  final double? width, height;
   @override
   Widget build(BuildContext context) {
     final selectedVideoProvider =
         Provider.of<SelectedVideoProvider>(context, listen: false);
-    final _miniPlayerControllerProvider = Provider.of<MiniplayerController>(
+    final _miniPlayerControllerProvider =
+        Provider.of<MiniPlayerControllerProvider>(
       context,
     );
     print('re-build video card');
@@ -31,14 +36,11 @@ class VideoCard extends StatelessWidget {
             selectedVideoProvider.setSelectedVideo(this.video);
             print(
                 'selected video: ${selectedVideoProvider.selectedVideo.toString()}');
-            _miniPlayerControllerProvider.animateToHeight(
-              state: PanelState.MAX,
-              duration: Duration(milliseconds: 200),
-            );
+            _miniPlayerControllerProvider.animateToHeight();
           },
           child: Container(
-            width: double.infinity,
-            height: 230.0,
+            width: this.width ?? double.infinity,
+            height: this.height ?? 230.0,
             decoration: BoxDecoration(
               image: DecorationImage(
                 image: NetworkImage(video.thumbnailUrl),

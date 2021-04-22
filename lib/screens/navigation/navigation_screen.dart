@@ -1,6 +1,7 @@
-import 'package:blog_responsive_app/models/video.dart';
+import 'package:blog_responsive_app/providers/min_player_controller_provider.dart';
 import 'package:blog_responsive_app/providers/selected_video_provider.dart';
 import 'package:blog_responsive_app/screens/home/home_screen.dart';
+import 'package:blog_responsive_app/screens/video/video_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -30,7 +31,7 @@ class _NavigationScreenState extends State<NavigationScreen> {
     const Center(child: Text('Subscriptions Screen')),
     const Center(child: Text('Library Screen')),
   ];
-
+  static const double _miniPlayerHeight = 60.0;
   @override
   Widget build(BuildContext context) {
     print('re-build nav');
@@ -38,7 +39,8 @@ class _NavigationScreenState extends State<NavigationScreen> {
       context,
       listen: true,
     );
-    final _miniPlayerControllerProvider = Provider.of<MiniplayerController>(
+    final _miniPlayerControllerProvider =
+        Provider.of<MiniPlayerControllerProvider>(
       context,
     );
     return Scaffold(
@@ -98,94 +100,103 @@ class _NavigationScreenState extends State<NavigationScreen> {
               ..add(
                 Offstage(
                   offstage: _selectedVideoProvider.selectedVideo == null,
-                  child: Miniplayer(
-                    controller: _miniPlayerControllerProvider,
-                    minHeight: 60.0,
-                    maxHeight: MediaQuery.of(context).size.height * 0.85,
-                    builder: (height, percentage) {
-                      final v = _selectedVideoProvider.selectedVideo;
-                      if (v == null) {
-                        return SizedBox.shrink();
-                      }
-                      return Container(
-                        width: double.infinity,
-                        color: Theme.of(context).scaffoldBackgroundColor,
-                        child: Column(
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Image.network(
-                                  _selectedVideoProvider
-                                      .getSelectedVideoData()
-                                      .thumbnailUrl,
-                                  height: 56.0,
-                                  width: 120.0,
-                                  fit: BoxFit.cover,
-                                ),
-                                const SizedBox(width: 2.0),
-                                Expanded(
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
+                  child: Consumer<MiniPlayerControllerProvider>(
+                    builder: (context, _controller, child) {
+                      print(_controller.controller.value.toString());
+                      return Miniplayer(
+                        controller: _controller.controller,
+                        minHeight: _miniPlayerHeight,
+                        maxHeight: MediaQuery.of(context).size.height,
+                        builder: (height, percentage) {
+                          final v = _selectedVideoProvider.selectedVideo;
+                          if (v == null) {
+                            return SizedBox.shrink();
+                          }
+                          if (height <= _miniPlayerHeight + 50.0)
+                            return Container(
+                              width: double.infinity,
+                              color: Theme.of(context).scaffoldBackgroundColor,
+                              child: Column(
+                                children: [
+                                  Row(
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
-                                    mainAxisSize: MainAxisSize.min,
                                     children: [
-                                      Flexible(
-                                        child: Text(
-                                          _selectedVideoProvider
-                                              .getSelectedVideoData()
-                                              .title,
-                                          style: TextStyle(
-                                            fontWeight: FontWeight.w600,
-                                          ),
-                                          softWrap: true,
-                                          maxLines: 1,
-                                          overflow: TextOverflow.ellipsis,
-                                          textAlign: TextAlign.left,
+                                      Image.network(
+                                        _selectedVideoProvider
+                                            .getSelectedVideoData()
+                                            .thumbnailUrl,
+                                        height: 56.0,
+                                        width: 120.0,
+                                        fit: BoxFit.cover,
+                                      ),
+                                      const SizedBox(width: 2.0),
+                                      Expanded(
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: [
+                                            Flexible(
+                                              child: Text(
+                                                _selectedVideoProvider
+                                                    .getSelectedVideoData()
+                                                    .title,
+                                                style: TextStyle(
+                                                  fontWeight: FontWeight.w600,
+                                                ),
+                                                softWrap: true,
+                                                maxLines: 1,
+                                                overflow: TextOverflow.ellipsis,
+                                                textAlign: TextAlign.left,
+                                              ),
+                                            ),
+                                            SizedBox(height: 3),
+                                            Text(
+                                              '${_selectedVideoProvider.getSelectedVideoData().author.name}',
+                                              style: TextStyle(
+                                                fontWeight: FontWeight.w600,
+                                                fontSize: 11,
+                                                color: Colors.grey,
+                                              ),
+                                              textAlign: TextAlign.left,
+                                              softWrap: true,
+                                              maxLines: 1,
+                                              overflow: TextOverflow.ellipsis,
+                                            ),
+                                          ],
                                         ),
                                       ),
-                                      SizedBox(height: 3),
-                                      Text(
-                                        '${_selectedVideoProvider.getSelectedVideoData().author.name}',
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.w600,
-                                          fontSize: 11,
-                                          color: Colors.grey,
-                                        ),
-                                        textAlign: TextAlign.left,
-                                        softWrap: true,
-                                        maxLines: 1,
-                                        overflow: TextOverflow.ellipsis,
+                                      IconButton(
+                                        icon: Icon(CupertinoIcons.play_fill,
+                                            size: 18.0),
+                                        onPressed: () {
+                                          print('Play video');
+                                        },
+                                      ),
+                                      IconButton(
+                                        icon: Icon(CupertinoIcons.clear,
+                                            size: 18.0),
+                                        onPressed: () {
+                                          print('Close the video');
+                                          _selectedVideoProvider
+                                              .setSelectedVideo(null);
+                                        },
                                       ),
                                     ],
                                   ),
-                                ),
-                                IconButton(
-                                  icon: Icon(CupertinoIcons.play_fill,
-                                      size: 18.0),
-                                  onPressed: () {
-                                    print('Play video');
-                                  },
-                                ),
-                                IconButton(
-                                  icon: Icon(CupertinoIcons.clear, size: 18.0),
-                                  onPressed: () {
-                                    print('Close the video');
-                                    _selectedVideoProvider
-                                        .setSelectedVideo(null);
-                                  },
-                                ),
-                              ],
-                            ),
-                            const LinearProgressIndicator(
-                              value: 0.78,
-                              valueColor: AlwaysStoppedAnimation<Color>(
-                                  Colors.redAccent),
-                            ),
-                          ],
-                        ),
+                                  const LinearProgressIndicator(
+                                    value: 0.78,
+                                    valueColor: AlwaysStoppedAnimation<Color>(
+                                        Colors.redAccent),
+                                  ),
+                                ],
+                              ),
+                            );
+                          return VideoScreen();
+                        },
                       );
                     },
                   ),

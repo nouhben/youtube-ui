@@ -1,9 +1,9 @@
 import 'package:blog_responsive_app/models/customer.dart';
+import 'package:blog_responsive_app/providers/min_player_controller_provider.dart';
 import 'package:blog_responsive_app/providers/selected_video_provider.dart';
 import 'package:blog_responsive_app/screens/navigation/navigation_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:miniplayer/miniplayer.dart';
 import 'package:provider/provider.dart';
 
 void main() {
@@ -37,8 +37,8 @@ class MyApp extends StatelessWidget {
           ChangeNotifierProvider<SelectedVideoProvider>(
             create: (_) => SelectedVideoProvider(),
           ),
-          Provider<MiniplayerController>(
-            create: (_) => MiniplayerController(),
+          ChangeNotifierProvider<MiniPlayerControllerProvider>(
+            create: (_) => MiniPlayerControllerProvider(),
           ),
         ],
         child: NavigationScreen(),
