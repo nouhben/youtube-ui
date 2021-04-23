@@ -1,3 +1,5 @@
+import 'package:blog_responsive_app/models/customer.dart';
+import 'package:blog_responsive_app/screens/home/video_information_headings.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -96,6 +98,7 @@ class VideoScreen extends StatelessWidget {
                             const Divider(),
                             ReactionsRow(video: selectedVideo),
                             const Divider(),
+                            VideoOwnerInfo(author: selectedVideo.author),
                           ],
                         ),
                       )
@@ -113,17 +116,30 @@ class VideoScreen extends StatelessWidget {
 
 class ReactionsRow extends StatelessWidget {
   final Video video;
-
   const ReactionsRow({Key? key, required this.video}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: [
         ReactionButton(
-          onPress: () {},
+          onPress: () {
+            print('Hello');
+          },
           label: video.likes,
           icon: Icons.thumb_up_outlined,
         ),
+        ReactionButton(
+          onPress: () {},
+          label: video.dislikes,
+          icon: Icons.thumb_down_outlined,
+        ),
+        ReactionButton(
+            onPress: () {}, label: 'Share', icon: CupertinoIcons.reply),
+        ReactionButton(
+            onPress: () {}, label: 'Download', icon: Icons.download_outlined),
+        ReactionButton(
+            onPress: () {}, label: 'Save', icon: Icons.library_add_outlined),
       ],
     );
   }
@@ -143,13 +159,87 @@ class ReactionButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: this.onPress,
+    return TextButton(
+      onPressed: this.onPress,
+      style: ButtonStyle(
+        padding: MaterialStateProperty.all(EdgeInsets.zero),
+        textStyle: MaterialStateProperty.all(
+          TextStyle(color: Colors.white),
+        ),
+        overlayColor: MaterialStateProperty.all(
+          Colors.deepPurpleAccent.withOpacity(0.11),
+        ),
+        foregroundColor: MaterialStateProperty.all(Colors.white),
+      ),
       child: Column(
         children: [
           Icon(this.icon),
           const SizedBox(height: 5.0),
           Text(this.label),
+        ],
+      ),
+    );
+  }
+}
+
+class VideoOwnerInfo extends StatelessWidget {
+  final CustomUser author;
+
+  const VideoOwnerInfo({Key? key, required this.author}) : super(key: key);
+  @override
+  Widget build(BuildContext context) {
+    return TextButton(
+      onPressed: () {},
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          CircleAvatar(
+            radius: 25.0,
+            foregroundImage: NetworkImage(author.profileImageUrl),
+          ),
+          const SizedBox(width: 20.0),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Flexible(
+                  child: Text(
+                    author.name,
+                    style: TextStyle(fontWeight: FontWeight.w600),
+                    softWrap: true,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    textAlign: TextAlign.left,
+                  ),
+                ),
+                SizedBox(height: 3),
+                Flexible(
+                  child: Text(
+                    '${author.subscribers} subscribers',
+                    style: TextStyle(
+                      fontWeight: FontWeight.w600,
+                      fontSize: 11,
+                      color: Colors.grey,
+                    ),
+                    textAlign: TextAlign.left,
+                    softWrap: true,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(width: 20.0),
+          TextButton(
+            onPressed: () {},
+            child: Text(
+              'SUBSCRIBE',
+              style: TextStyle(color: Colors.red, fontSize: 16.0),
+            ),
+          ),
         ],
       ),
     );
