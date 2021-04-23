@@ -1,17 +1,19 @@
-import 'package:blog_responsive_app/models/video.dart';
-import 'package:blog_responsive_app/providers/min_player_controller_provider.dart';
-import 'package:blog_responsive_app/providers/selected_video_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
+import 'package:blog_responsive_app/models/video.dart';
+import 'package:blog_responsive_app/providers/min_player_controller_provider.dart';
+import 'package:blog_responsive_app/providers/selected_video_provider.dart';
+
 class VideoScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-      body: CustomScrollView(
+    return Container(
+      width: double.infinity,
+      color: Theme.of(context).scaffoldBackgroundColor,
+      child: CustomScrollView(
         shrinkWrap: true,
         slivers: [
           SliverToBoxAdapter(
@@ -91,16 +93,9 @@ class VideoScreen extends StatelessWidget {
                               maxLines: 2,
                               overflow: TextOverflow.ellipsis,
                             ),
-                            Row(
-                              children: [
-                                TextButton.icon(
-                                  onPressed: () {},
-                                  icon:
-                                      const Icon(CupertinoIcons.hand_thumbsup),
-                                  label: Text('700'),
-                                ),
-                              ],
-                            )
+                            const Divider(),
+                            ReactionsRow(video: selectedVideo),
+                            const Divider(),
                           ],
                         ),
                       )
@@ -110,6 +105,51 @@ class VideoScreen extends StatelessWidget {
               },
             ),
           ),
+        ],
+      ),
+    );
+  }
+}
+
+class ReactionsRow extends StatelessWidget {
+  final Video video;
+
+  const ReactionsRow({Key? key, required this.video}) : super(key: key);
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        ReactionButton(
+          onPress: () {},
+          label: video.likes,
+          icon: Icons.thumb_up_outlined,
+        ),
+      ],
+    );
+  }
+}
+
+class ReactionButton extends StatelessWidget {
+  const ReactionButton({
+    Key? key,
+    required this.icon,
+    required this.onPress,
+    required this.label,
+  }) : super(key: key);
+
+  final IconData icon;
+  final GestureTapCallback onPress;
+  final String label;
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: this.onPress,
+      child: Column(
+        children: [
+          Icon(this.icon),
+          const SizedBox(height: 5.0),
+          Text(this.label),
         ],
       ),
     );
