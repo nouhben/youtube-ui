@@ -19,7 +19,7 @@ class HomeScreen extends StatelessWidget {
                 final _video = videos[index];
                 return Padding(
                   padding: const EdgeInsets.only(bottom: 20),
-                  child: VideoCard(video: _video),
+                  child: VideoCard(video: _video, hasPadding: false),
                 );
               },
               childCount: videos.length,

@@ -15,10 +15,14 @@ class VideoCard extends StatelessWidget {
     this.width,
     this.height,
     this.showProgressIndicator,
+    this.hasPadding = false,
+    this.onTap,
   }) : super(key: key);
   final Video video;
   final double? width, height;
   final bool? showProgressIndicator;
+  final bool hasPadding;
+  final GestureTapCallback? onTap;
   @override
   Widget build(BuildContext context) {
     final selectedVideoProvider =
@@ -28,82 +32,91 @@ class VideoCard extends StatelessWidget {
       context,
     );
     print('re-build video card');
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        InkWell(
-          onTap: () {
-            print('play the video from thumbnail');
-            selectedVideoProvider.setSelectedVideo(this.video);
-            print(
-                'selected video: ${selectedVideoProvider.selectedVideo.toString()}');
-            _miniPlayerControllerProvider.animateToHeight();
-          },
-          child: Container(
-            width: this.width ?? double.infinity,
-            height: this.height ?? 230.0,
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                image: NetworkImage(video.thumbnailUrl),
-                fit: BoxFit.cover,
-              ),
-            ),
-            child: Stack(
-              children: [
-                Align(
-                  alignment: Alignment.bottomRight,
-                  child: VideoDuration(duration: video.duration),
-                ),
-              ],
-            ),
-          ),
-        ),
-        if (this.showProgressIndicator != null)
-          const LinearProgressIndicator(
-            value: 0.78,
-            valueColor: AlwaysStoppedAnimation<Color>(Colors.redAccent),
-          )
-        else
-          const SizedBox.shrink(),
-        const SizedBox(height: 6.0),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 10.0),
-          child: InkWell(
-            onLongPress: () => print('must show menu from long press!'),
+    return Padding(
+      padding: this.hasPadding
+          ? EdgeInsets.symmetric(horizontal: 10.0)
+          : EdgeInsets.zero,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          InkWell(
             onTap: () {
-              print('must show the video: ');
+              print('play the video from thumbnail');
               selectedVideoProvider.setSelectedVideo(this.video);
               print(
                   'selected video: ${selectedVideoProvider.selectedVideo.toString()}');
+              _miniPlayerControllerProvider.animateToHeight();
+              if (this.onTap != null) {
+                this.onTap!();
+              }
             },
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                IconButton(
-                  iconSize: 40.0,
-                  icon: CircleAvatar(
-                    foregroundImage: NetworkImage(video.author.profileImageUrl),
-                  ),
-                  onPressed: () => print('profile'),
+            child: Container(
+              width: this.width ?? double.infinity,
+              height: this.height ?? 230.0,
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  image: NetworkImage(video.thumbnailUrl),
+                  fit: BoxFit.cover,
                 ),
-                const SizedBox(width: 20.0),
-                VideoInformationHeadings(video: this.video),
-                const SizedBox(width: 20.0),
-                IconButton(
-                  icon: Icon(
-                    CupertinoIcons.ellipsis_vertical,
-                    size: 18.0,
-                    color: Colors.grey,
+              ),
+              child: Stack(
+                children: [
+                  Align(
+                    alignment: Alignment.bottomRight,
+                    child: VideoDuration(duration: video.duration),
                   ),
-                  onPressed: () {
-                    print('must show menu');
-                  },
-                ),
-              ],
+                ],
+              ),
             ),
           ),
-        ),
-      ],
+          if (this.showProgressIndicator != null)
+            const LinearProgressIndicator(
+              value: 0.78,
+              valueColor: AlwaysStoppedAnimation<Color>(Colors.redAccent),
+            )
+          else
+            const SizedBox.shrink(),
+          const SizedBox(height: 6.0),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10.0),
+            child: InkWell(
+              onLongPress: () => print('must show menu from long press!'),
+              onTap: () {
+                print('must show the video: ');
+                selectedVideoProvider.setSelectedVideo(this.video);
+                print(
+                    'selected video: ${selectedVideoProvider.selectedVideo.toString()}');
+              },
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  IconButton(
+                    iconSize: 40.0,
+                    icon: CircleAvatar(
+                      foregroundImage:
+                          NetworkImage(video.author.profileImageUrl),
+                    ),
+                    onPressed: () => print('profile'),
+                  ),
+                  const SizedBox(width: 20.0),
+                  VideoInformationHeadings(video: this.video),
+                  const SizedBox(width: 20.0),
+                  IconButton(
+                    icon: Icon(
+                      CupertinoIcons.ellipsis_vertical,
+                      size: 18.0,
+                      color: Colors.grey,
+                    ),
+                    onPressed: () {
+                      print('must show menu');
+                    },
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

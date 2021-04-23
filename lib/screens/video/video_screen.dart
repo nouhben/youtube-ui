@@ -1,3 +1,5 @@
+import 'package:blog_responsive_app/models/data.dart';
+import 'package:blog_responsive_app/screens/home/video_card.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -10,7 +12,25 @@ import 'package:blog_responsive_app/providers/selected_video_provider.dart';
 import 'widgets/reactions.dart';
 import 'widgets/video_owner_info.dart';
 
-class VideoScreen extends StatelessWidget {
+class VideoScreen extends StatefulWidget {
+  @override
+  _VideoScreenState createState() => _VideoScreenState();
+}
+
+class _VideoScreenState extends State<VideoScreen> {
+  ScrollController? _controller;
+  @override
+  void initState() {
+    super.initState();
+    _controller = ScrollController();
+  }
+
+  @override
+  void dispose() {
+    _controller!.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -18,6 +38,7 @@ class VideoScreen extends StatelessWidget {
       color: Theme.of(context).scaffoldBackgroundColor,
       child: CustomScrollView(
         shrinkWrap: true,
+        controller: _controller,
         slivers: [
           SliverToBoxAdapter(
             child: Consumer<SelectedVideoProvider>(
@@ -102,6 +123,26 @@ class VideoScreen extends StatelessWidget {
                   ),
                 );
               },
+            ),
+          ),
+          SliverList(
+            delegate: SliverChildBuilderDelegate(
+              (context, index) {
+                final _video = suggestedVideos[index];
+                return Padding(
+                  padding: const EdgeInsets.only(bottom: 20),
+                  child: VideoCard(
+                    video: _video,
+                    hasPadding: true,
+                    onTap: () => _controller!.animateTo(
+                      0,
+                      duration: const Duration(milliseconds: 200),
+                      curve: Curves.easeInBack,
+                    ),
+                  ),
+                );
+              },
+              childCount: suggestedVideos.length,
             ),
           ),
         ],
