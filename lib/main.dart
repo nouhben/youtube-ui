@@ -1,5 +1,5 @@
 import 'package:blog_responsive_app/models/customer.dart';
-import 'package:blog_responsive_app/models/video.dart';
+import 'package:blog_responsive_app/providers/min_player_controller_provider.dart';
 import 'package:blog_responsive_app/providers/selected_video_provider.dart';
 import 'package:blog_responsive_app/screens/navigation/navigation_screen.dart';
 import 'package:flutter/material.dart';
@@ -28,11 +28,16 @@ class MyApp extends StatelessWidget {
           Provider<CustomUser>(
             create: (_) => CustomUser(
               name: 'Code Warrior',
-              profileImageUrl:
-                  'https://yt3.ggpht.com/yti/ANoDKi5FPLl_jZl-PHEg5XTsaGg2h_JCSaXRjRGErf36AQ=s88-c-k-c0x00ffffff-no-rj-mo',
+              profileImageUrl: 'https://yt3.ggpht.com/yti/ANoDKi5FPLl_jZl-PHEg5XTsaGg2h_JCSaXRjRGErf36AQ=s88-c-k-c0x00ffffff-no-rj-mo',
               email: 'leoandrese.5@gmail.com',
               subscribers: '500k',
             ),
+          ),
+          ChangeNotifierProvider<SelectedVideoProvider>(
+            create: (_) => SelectedVideoProvider(),
+          ),
+          ChangeNotifierProvider<MiniPlayerControllerProvider>(
+            create: (_) => MiniPlayerControllerProvider(),
           ),
         ],
         child: NavigationScreen(),

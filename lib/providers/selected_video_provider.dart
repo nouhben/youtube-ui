@@ -5,23 +5,27 @@ import 'package:flutter/foundation.dart';
 import 'package:blog_responsive_app/models/video.dart';
 
 class SelectedVideoProvider with ChangeNotifier {
-  Video _selectedVideo = Video(
-    id: '',
-    author: currentUser,
-    title: '',
-    thumbnailUrl: '',
-    duration: '',
-    timestamp: DateTime.now(),
-    viewCount: '',
-    likes: '',
-    dislikes: '',
-  );
+  dynamic _selectedVideo;
 
-  void setSelectedVideo(Video video) {
+  void setSelectedVideo(dynamic video) {
     this._selectedVideo = video;
     notifyListeners();
   }
 
-  Video get selectedVideo => this._selectedVideo;
-  bool get isFake => this._selectedVideo.id.isEmpty;
+  set setVideo(dynamic video) {
+    _selectedVideo = video;
+    notifyListeners();
+  }
+
+  dynamic get selectedVideo => this._selectedVideo;
+  @override
+  String toString() {
+    Video v = this.selectedVideo;
+    return v.toString();
+  }
+
+  Video getSelectedVideoData() {
+    final Video v = this.selectedVideo;
+    return v;
+  }
 }
