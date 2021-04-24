@@ -33,119 +33,129 @@ class _VideoScreenState extends State<VideoScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      color: Theme.of(context).scaffoldBackgroundColor,
-      child: CustomScrollView(
-        shrinkWrap: true,
-        controller: _controller,
-        slivers: [
-          SliverToBoxAdapter(
-            child: Consumer<SelectedVideoProvider>(
-              builder: (_, selectedVideoProvider, __) {
-                final Video selectedVideo =
-                    selectedVideoProvider.getSelectedVideoData();
-                return SafeArea(
-                  child: Column(
-                    children: [
-                      Stack(
-                        children: [
-                          Image.network(
-                            selectedVideo.thumbnailUrl,
-                            height: 220.0,
-                            width: double.infinity,
-                            fit: BoxFit.cover,
-                          ),
-                          Positioned(
-                            top: 0,
-                            left: 0,
-                            child: IconButton(
-                              icon: const Icon(
-                                CupertinoIcons.chevron_down,
-                                color: Colors.white,
-                              ),
-                              onPressed: () {
-                                final controller =
-                                    Provider.of<MiniPlayerControllerProvider>(
-                                  context,
-                                  listen: false,
-                                );
-                                print('Should Dismiss the player');
-                                controller.animateToMin();
-                              },
-                            ),
-                          ),
-                        ],
-                      ),
-                      const LinearProgressIndicator(
-                        value: 0.78,
-                        valueColor:
-                            AlwaysStoppedAnimation<Color>(Colors.redAccent),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 10.0, vertical: 10.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+    return InkWell(
+      ///
+      ///this is to prevent the mini player from shrinking down
+      ///only the button should shrink it down
+      onTap: () {
+        final miniPlayerControllerProvider =
+            Provider.of<MiniPlayerControllerProvider>(context, listen: false);
+        miniPlayerControllerProvider.animateToHeight();
+      },
+      child: Container(
+        width: double.infinity,
+        color: Theme.of(context).scaffoldBackgroundColor,
+        child: CustomScrollView(
+          shrinkWrap: true,
+          controller: _controller,
+          slivers: [
+            SliverToBoxAdapter(
+              child: Consumer<SelectedVideoProvider>(
+                builder: (_, selectedVideoProvider, __) {
+                  final Video selectedVideo =
+                      selectedVideoProvider.getSelectedVideoData();
+                  return SafeArea(
+                    child: Column(
+                      children: [
+                        Stack(
                           children: [
-                            Text(
-                              selectedVideo.title,
-                              style: TextStyle(
-                                fontWeight: FontWeight.w600,
-                                fontSize: 18.0,
-                              ),
-                              softWrap: true,
-                              maxLines: 3,
-                              overflow: TextOverflow.visible,
-                              textAlign: TextAlign.left,
+                            Image.network(
+                              selectedVideo.thumbnailUrl,
+                              height: 220.0,
+                              width: double.infinity,
+                              fit: BoxFit.cover,
                             ),
-                            const SizedBox(height: 5),
-                            Text(
-                              '${selectedVideo.viewCount} views • ${timeago.format(selectedVideo.timestamp)}',
-                              style: TextStyle(
-                                fontWeight: FontWeight.w600,
-                                fontSize: 13,
-                                color: Colors.grey,
+                            Positioned(
+                              top: 0,
+                              left: 0,
+                              child: IconButton(
+                                icon: const Icon(
+                                  CupertinoIcons.chevron_down,
+                                  color: Colors.white,
+                                ),
+                                onPressed: () {
+                                  final controller =
+                                      Provider.of<MiniPlayerControllerProvider>(
+                                    context,
+                                    listen: false,
+                                  );
+                                  print('Should Dismiss the player');
+                                  controller.animateToMin();
+                                },
                               ),
-                              textAlign: TextAlign.left,
-                              softWrap: true,
-                              maxLines: 2,
-                              overflow: TextOverflow.ellipsis,
                             ),
-                            const Divider(),
-                            ReactionsRow(video: selectedVideo),
-                            const Divider(),
-                            VideoOwnerInfo(author: selectedVideo.author),
                           ],
                         ),
-                      )
-                    ],
-                  ),
-                );
-              },
-            ),
-          ),
-          SliverList(
-            delegate: SliverChildBuilderDelegate(
-              (context, index) {
-                final _video = suggestedVideos[index];
-                return Padding(
-                  padding: const EdgeInsets.only(bottom: 20),
-                  child: VideoCard(
-                    video: _video,
-                    hasPadding: true,
-                    onTap: () => _controller!.animateTo(
-                      0,
-                      duration: const Duration(milliseconds: 200),
-                      curve: Curves.easeInBack,
+                        const LinearProgressIndicator(
+                          value: 0.78,
+                          valueColor:
+                              AlwaysStoppedAnimation<Color>(Colors.redAccent),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 10.0, vertical: 10.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                selectedVideo.title,
+                                style: TextStyle(
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: 18.0,
+                                ),
+                                softWrap: true,
+                                maxLines: 3,
+                                overflow: TextOverflow.visible,
+                                textAlign: TextAlign.left,
+                              ),
+                              const SizedBox(height: 5),
+                              Text(
+                                '${selectedVideo.viewCount} views • ${timeago.format(selectedVideo.timestamp)}',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: 13,
+                                  color: Colors.grey,
+                                ),
+                                textAlign: TextAlign.left,
+                                softWrap: true,
+                                maxLines: 2,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                              const Divider(),
+                              ReactionsRow(video: selectedVideo),
+                              const Divider(),
+                              VideoOwnerInfo(author: selectedVideo.author),
+                            ],
+                          ),
+                        )
+                      ],
                     ),
-                  ),
-                );
-              },
-              childCount: suggestedVideos.length,
+                  );
+                },
+              ),
             ),
-          ),
-        ],
+            SliverList(
+              delegate: SliverChildBuilderDelegate(
+                (context, index) {
+                  final _video = suggestedVideos[index];
+                  return Padding(
+                    padding: const EdgeInsets.only(bottom: 20),
+                    child: VideoCard(
+                      video: _video,
+                      hasPadding: true,
+                      onTap: () => _controller!.animateTo(
+                        0,
+                        duration: const Duration(milliseconds: 200),
+                        curve: Curves.easeInBack,
+                      ),
+                    ),
+                  );
+                },
+                childCount: suggestedVideos.length,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
